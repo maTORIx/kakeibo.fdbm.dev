@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package kakeibo.v1;
+
+option go_package = "github.com/matorix/kakeibo.fdbm.dev/gen/kakeibo/v1;kakeibov1";
+
+message PageingData {
+  string cursor_id = 1;
+  int32 created_at = 2;
+  int32 limit = 3;
+}
+
+message MemberData {
+  string uid = 1;
+  bool is_admin = 2;
+}
+
+message LedgerLineData {
+  string id = 1;
+  int32 amount = 2;
+  string type = 3;
+  string description = 4;
+  int32 date = 5;
+  int32 created_at = 6;
+}
+
+message SignInRequest {
+  string email = 1;
+  string low_password = 2;
+}
+
+message SignInResponse {
+  string token = 1;
+}
+
+message GetLedgerRequest {
+  string ledger_id = 1;
+}
+
+message GetLedgerResponse {
+  string id = 1;
+  string admin_uid = 2;
+  repeated string member_uids = 3;
+}
+
+message AddLedgerRequest {
+  string name = 2;
+}
+
+message AddLedgerResponse {}
+
+message UpdateLedgerRequest {
+  string ledger_id = 1;
+  string name = 2;
+}
+
+message UpdateLedgerResponse {}
+
+message RemoveLedgerRequest {
+  string ledger_id = 1;
+}
+
+message RemoveLedgerResponse {}
+
+message AddLedgerMemberRequest {
+  string ledger_id = 1;
+  MemberData member = 2;
+}
+
+message AddLedgerMemberResponse {}
+
+message RemoveLedgerMemberRequest {
+  string ledger_id = 1;
+  MemberData member = 2;
+}
+
+message RemoveLedgerMemberResponse {}
+
+message AddLineRequest {}
+
+message AddLineResponse {}
+
+message UpdateLineRequest {
+  LedgerLineData data = 1;
+}
+
+message UpdateLineResponse {}
+
+message RemoveLineRequest {
+  string line_id = 1;
+}
+
+message RemoveLineResponse {}
+
+message ListLineRequest {
+  PageingData page = 1;
+  string ledger_id = 2;
+}
+
+message ListLineResponse {
+  repeated LedgerLineData lines = 1;
+}
+
+service KakeiboService {
+  rpc SignIn(SignInRequest) returns (SignInResponse) {}
+  rpc GetLedger(GetLedgerRequest) returns (GetLedgerResponse) {}
+  rpc AddLedger(AddLedgerRequest) returns (AddLedgerResponse) {}
+  rpc UpdateLedger(UpdateLedgerRequest) returns (UpdateLedgerResponse) {}
+  rpc RemoveLedger(RemoveLedgerRequest) returns (RemoveLedgerResponse) {}
+  rpc AddLedgerMember(AddLedgerMemberRequest) returns (AddLedgerMemberResponse) {}
+  rpc RemoveLedgerMember(RemoveLedgerMemberRequest) returns (RemoveLedgerMemberResponse) {}
+  rpc AddLine(AddLineRequest) returns (AddLineResponse) {}
+  rpc UpdateLine(UpdateLineRequest) returns (UpdateLineResponse) {}
+  rpc RemoveLine(RemoveLineRequest) returns (RemoveLineResponse) {}
+  rpc ListLine(ListLineRequest) returns (ListLineResponse) {}
+}
